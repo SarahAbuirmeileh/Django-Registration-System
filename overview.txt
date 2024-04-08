@@ -1,0 +1,42 @@
+1. accounts app: 
+/register 
+/login
+/logout 
+// Authorization & Authentication
+// when saving the password it should be hashed not encrypted
+
+2. schedules app:
+/schedule -> get (all schedules)
+/schedule -> post  (adding new schedule)
+/schedule -> put (edit schedule)
+/schedule -> delete  (delete schedule)
+
+3. admin app:
+/admin/reports -> get (generating reports )
+/admin/course -> post  (adding new course) We may check if the room is empty, and adding room table
+/admin/course -> put (edit course) We may check if the room is empty
+/admin/course -> delete  (delete course)
+
+4. courses app : 
+/course/search -> get 
+/course -> get (all courses)
+/course/id -> get (view course details) 
+/course/analytics -> get 
+
+5. students app:
+/student -> get (all students)
+/student/id -> get (view student details)
+/student -> put (edit student)
+/student -> delete  (delete student)
+/student/course -> put (adding course to student's schedule, display just the courses that he completed it's  prerequisites)
+/student/schedule -> get   (view the student's current course schedule)
+/student/notifications -> get (display notifications, reminders and deadlines)
+
+Additional work:
+Room table :
+room_number
+capacity
+screenAvailability
+1..* courses 
+
+reset password (one time link)
