@@ -25,7 +25,10 @@ The primary objective of this web application is to enhance the course registrat
 ## Database 🗃
 - The database includes tables for students, courses, course schedules, and student registrations.
 - Each entity has unique identifiers and relevant attributes.
-- The System utilizes MySQL as the underlying database management system.
+- The System utilizes MySQL as the underlying database management system.<br> <br>
+Here is the EER model:
+![course-reg](https://github.com/SarahAbuirmeileh/SarahAbuirmeileh/assets/127017088/4b17cb51-3517-4914-beba-4c371ccbfc11)
+
 
 ## Security 🔐
 The system implements robust security measures to protect user data and prevent unauthorized access.
