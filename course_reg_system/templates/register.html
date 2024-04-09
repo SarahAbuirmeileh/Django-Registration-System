@@ -7,8 +7,15 @@
 {% block content %}
     <h2>Register</h2>
 
-    <form method="POST">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
+    <form method="POST">
         {% csrf_token %}
         <label for="student_name">Student Name:</label><br>
         <input type="text" id="student_name" name="student_name" required><br>

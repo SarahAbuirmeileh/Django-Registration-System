@@ -3,6 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from students.models import Student
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 
 def login(request):
     if request.method == 'POST':
@@ -53,6 +56,13 @@ def register(request):
 
         if Student.objects.filter(email=email).exists():
             messages.error(request, 'Email is already registered')
+            return redirect('register')
+
+        try:
+            # Password must contain at least 8 characters, shouldn't be too common or entirely numeric.
+            validate_password(password)
+        except ValidationError as error:
+            messages.error(request, ' '.join(error.messages))
             return redirect('register')
 
         hashed_password = make_password(password)
