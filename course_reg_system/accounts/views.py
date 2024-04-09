@@ -55,6 +55,10 @@ def register(request):
         password = request.POST.get('password')
         student_id = request.POST.get('student_id')  # Added line to get student ID
 
+        if Student.objects.filter(student_id=student_id).exists():
+            messages.error(request, 'Student ID is already in use')
+            return redirect('register')
+
         if Student.objects.filter(email=email).exists():
             messages.error(request, 'Email is already registered')
             return redirect('register')
@@ -67,7 +71,12 @@ def register(request):
             return redirect('register')
 
         hashed_password = make_password(password)
-        student = Student.objects.create(student_name=student_name, email=email, password=hashed_password, student_id=student_id)  # Modified line to include student ID
+
+        try:
+            student = Student.objects.create(student_name=student_name, email=email, password=hashed_password,student_id=student_id)
+        except Exception:
+            messages.error(request, 'An error occurred during registration. Please try again later.')
+            return redirect('register')
 
         messages.success(request, 'Registration has been completed successfully! Please login.')
         return redirect('login')
