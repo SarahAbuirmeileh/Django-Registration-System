@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from students.models import Student
+from django.contrib.auth.hashers import make_password
 
 def login(request):
     if request.method == 'POST':
@@ -54,7 +55,8 @@ def register(request):
             messages.error(request, 'Email is already registered')
             return redirect('register')
 
-        student = Student.objects.create(student_name=student_name, email=email, password=password)
+        hashed_password = make_password(password)
+        student = Student.objects.create(student_name=student_name, email=email, password=hashed_password)
 
         messages.success(request, 'Registration has been completed successfully! Please login.')
         return redirect('login')
