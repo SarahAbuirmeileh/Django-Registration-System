@@ -2,7 +2,7 @@ from django.db import models
 from courses.models import Course
 
 class Student(models.Model):
-    student_id = models.AutoField(primary_key=True)
+    student_id = models.CharField(primary_key=True, max_length=20)
     student_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)

@@ -31,6 +31,7 @@ SECRET_KEY = 'django-insecure-m6y1vdx^khar24$mhye-p=jp2ak1cvvt50ag75w+y@bxqwq2d&
 DEBUG = True
 
 ALLOWED_HOSTS = []
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Application definition
@@ -64,7 +65,7 @@ ROOT_URLCONF = 'course_reg_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
