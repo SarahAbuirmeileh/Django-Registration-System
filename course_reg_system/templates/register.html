@@ -17,6 +17,8 @@
 
     <form method="POST">
         {% csrf_token %}
+        <label for="student_id">Student ID:</label><br>
+        <input type="text" id="student_id" name="student_id" required><br>
         <label for="student_name">Student Name:</label><br>
         <input type="text" id="student_name" name="student_name" required><br>
         <label for="email">Email:</label><br>
