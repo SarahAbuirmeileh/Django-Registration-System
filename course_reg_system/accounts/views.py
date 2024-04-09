@@ -20,10 +20,43 @@ def login(request):
             messages.error(request, 'Invalid email or password')
     return render(request, 'login.html')
 
+
 def logout(request):
     if 'student_id' in request.session:
         del request.session['student_id']
     return redirect('login')  # Redirect to login page after logout
 
+
 def home(request, student_name):
     return render(request, 'home.html', {'student_name': student_name})
+
+
+# I tried to use django forms
+# from django.contrib.auth.forms import UserCreationForm
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponse("You have been registered successfully")
+#     else:
+#         form = UserCreationForm()
+#         return render(request, 'register.html', {'form': form})
+
+
+def register(request):
+    if request.method == 'POST':
+        student_name = request.POST.get('student_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if Student.objects.filter(email=email).exists():
+            messages.error(request, 'Email is already registered')
+            return redirect('register')
+
+        student = Student.objects.create(student_name=student_name, email=email, password=password)
+
+        messages.success(request, 'Registration has been completed successfully! Please login.')
+        return redirect('login')
+
+    return render(request, 'register.html')
