@@ -40,3 +40,8 @@ screenAvailability
 1..* courses 
 
 reset password (one time link)
+
+Notes for project:
+1. Should be change the login, logout and register to use built-in modules in django ?
+2. Create the admin using django command, and login to it using the route (/admin)
+3. Creating admin model and add the content that he can see (eg. students, courses ...) 
