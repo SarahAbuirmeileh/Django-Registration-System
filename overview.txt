@@ -6,6 +6,7 @@
 // when saving the password it should be hashed not encrypted
 
 2. schedules app:
+
 /schedule -> get (all schedules)
 /schedule -> post  (adding new schedule)
 /schedule -> put (edit schedule)
