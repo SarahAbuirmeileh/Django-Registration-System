@@ -1,24 +1,46 @@
 {% extends "master.html" %}
+{% load static %}
 
 {% block title %}
     Login
 {% endblock %}
 
 {% block content %}
-    <h2>Login</h2>
-    <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %}
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br>
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="login-container p-4 shadow">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="text-center mb-4">Login</h2>
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <input type="email" class="form-control mb-3" id="email" placeholder="Email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control mb-3" id="password" placeholder="Password" name="password" required>
+                            </div>
+                            {% if messages %}
+                            <div class="messages mb-3">
+                                {% for message in messages %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <button type="submit" class="btn btn-primary form-control">Login</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="image-container">
+                            <img src="{% static 'images/student.jpg' %}" alt="Student Image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endif %}
-        <button type="submit">Login</button>
-    </form>
+    </div>
+</div>
 {% endblock %}
