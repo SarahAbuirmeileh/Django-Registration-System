@@ -8,18 +8,32 @@ from students.models import StudentRegistration
 from .serializers import CourseSerializer
 
 
-@api_view(['DELETE'])
-def delete_course(request, course_id):
-    try:
-        course = Course.objects.get(pk=course_id)
-    except Course.DoesNotExist:
-        return Response({"message": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
-
+@api_view(['DELETE', 'PATCH'])
+def delete_edit_course(request, course_id):
     if request.method == 'DELETE':
-        if course.delete():
-            return JsonResponse({"message": "Course deleted successfully"}, status=status.HTTP_200_OK)
-        else:
-            return JsonResponse({"message": "Failed to delete course"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        try:
+            course = Course.objects.get(pk=course_id)
+        except Course.DoesNotExist:
+            return Response({"message": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'DELETE':
+            if course.delete():
+                return JsonResponse({"message": "Course deleted successfully"}, status=status.HTTP_200_OK)
+            else:
+                return JsonResponse({"message": "Failed to delete course"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    elif request.method == 'PATCH':
+        try:
+            course = Course.objects.get(pk=course_id)
+        except Course.DoesNotExist:
+            return Response({"message": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == 'PATCH':
+            serializer = CourseSerializer(course, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 def generate_reports(request):
