@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Course Reports
+{% endblock %}
+
+{% block content %}
+    <h1>Courses Reports</h1>
+
+    {% for course_enrollment in courses_enrollments.items %}
+        <div>
+            <h2>Course Details</h2>
+            <p>Course Code: {{ course_enrollment.course_code }}</p>
+        </div>
+
+        <div>
+            <h2>Enrollment Information</h2>
+            <p>Total Enrollment: {{ course_enrollment.course_code }}</p>
+        </div>
+
+        <div>
+            <h2>Popularity Information</h2>
+            <p>Popularity Score: {{ data.courses_popularity.course_code }}</p>
+        </div>
+        <hr>
+    {% endfor %}
+{% endblock %}
