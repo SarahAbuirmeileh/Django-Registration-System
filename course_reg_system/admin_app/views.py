@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from courses.models import Course
 from students.models import StudentRegistration
+from .serializers import CourseSerializer
+
 
 @api_view(['DELETE'])
 def delete_course(request, course_id):
@@ -66,3 +68,13 @@ def generate_reports(request):
     }
     # return Response(data)
     return render(request, 'courses_reports.html', data)
+
+
+@api_view(['POST'])
+def create_course(request):
+    if request.method == 'POST':
+        serializer = CourseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
