@@ -45,4 +45,62 @@ reset password (one time link)
 Notes for project:
 1. Should be change the login, logout and register to use built-in modules in django ?
 2. Create the admin using django command, and login to it using the route (/admin)
-3. Creating admin model and add the content that he can see (eg. students, courses ...) 
+3. Creating admin model and add the content that he can see (eg. students, courses ...)
+
+
+
+
+
+
+
+
+All models:
+
+from django.db import models
+from schedules.models import CourseSchedule
+
+class Course(models.Model):
+    course_code = models.CharField(max_length=10, unique=True)
+    course_name = models.CharField(max_length=100)
+    description = models.TextField()
+    instructor_name = models.CharField(max_length=100)
+    schedule = models.ForeignKey(CourseSchedule, on_delete=models.CASCADE, null=True, blank=True)
+    prerequisites = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+    capacity = models.IntegerField()
+
+    def __str__(self):
+        return self.course_name
+
+
+from django.db import models
+
+class CourseSchedule(models.Model):
+    schedule_id = models.AutoField(primary_key=True)
+    days = models.CharField(max_length=10)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    room_number = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"Schedule {self.schedule_id} ({self.days} {self.start_time}-{self.end_time})"
+
+
+from django.db import models
+from courses.models import Course
+
+class Student(models.Model):
+    student_id = models.CharField(primary_key=True, max_length=20)
+    student_name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.student_name
+
+class StudentRegistration(models.Model):
+    registration_id = models.AutoField(primary_key=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Student {self.student.student_name} registered for {self.course.course_name}"
