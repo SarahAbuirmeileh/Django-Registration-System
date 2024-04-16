@@ -6,6 +6,7 @@ class Student(models.Model):
     student_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+    courses = models.ManyToManyField(Course, through='StudentRegistration', related_name='students')
 
     def __str__(self):
         return self.student_name
