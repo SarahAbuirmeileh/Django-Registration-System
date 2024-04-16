@@ -4,7 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Student, StudentRegistration
 from .serializers import StudentSerializer
-from courses.models import Course
+from courses.serializers import CourseSerializer
+
 
 
 @api_view(['GET'])
@@ -12,6 +13,7 @@ def get_all_students(request):
     students = Student.objects.all()
     serializer = StudentSerializer(students, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET', 'PATCH', 'DELETE'])
 def student_details(request, id):
@@ -56,3 +58,14 @@ def add_course_to_schedule(request, student_id, course_id):
 
     return Response({"message": "Course added to schedule successfully"}, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def get_student_schedule(request, student_id):
+    try:
+        student = Student.objects.get(student_id=student_id)
+    except Student.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    schedule = student.courses.all()
+    serializer = CourseSerializer(schedule, many=True)
+    return Response(serializer.data)
