@@ -103,22 +103,16 @@ def create_deadline(request):
     if request.method == 'POST':
         serializer = DeadlineSerializer(data=request.data)
         if serializer.is_valid():
-            # Save the deadline
             with transaction.atomic():
                 deadline = serializer.save()
 
-                # Send email notification to all students
                 students = Student.objects.all()
-                try:
-                    for student in students:
-                        send_mail(
-                            f"New Deadline: {deadline.name}",
-                            f"A new deadline '{deadline.name}' has been created. Make sure to check it.",
-                            'sarahabuirmeileh@gmail.com',  # Sender's email address
-                            [student.email],  # Recipient's email address
-                           # fail_silently=False,
-                        )
-                except Exception:
-                    return Response(Exception)
+                for student in students:
+                    send_mail(
+                        f"New Deadline: {deadline.name}",
+                        f"A new deadline '{deadline.name}' has been created. Make sure to check it.",
+                        'sarahabuirmeileh@gmail.com',
+                        [student.email],
+                    )
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
