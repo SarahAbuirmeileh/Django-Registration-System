@@ -2,10 +2,9 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Student, StudentRegistration
-from .serializers import StudentSerializer
+from .models import Student, StudentRegistration, Deadline
+from .serializers import StudentSerializer, DeadlineSerializer
 from courses.serializers import CourseSerializer
-
 
 
 @api_view(['GET'])
@@ -68,4 +67,11 @@ def get_student_schedule(request, student_id):
 
     schedule = student.courses.all()
     serializer = CourseSerializer(schedule, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def student_deadlines(request):
+    deadlines = Deadline.objects.all()  # Retrieve all deadlines
+    serializer = DeadlineSerializer(deadlines, many=True)
     return Response(serializer.data)
