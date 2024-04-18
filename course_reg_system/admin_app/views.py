@@ -1,11 +1,15 @@
+from django.core.mail import send_mail
+from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from courses.models import Course
 from students.models import StudentRegistration
 from .serializers import CourseSerializer
+from students.serializers import DeadlineSerializer
+from students.models import Student, Deadline
 
 
 @api_view(['DELETE', 'PATCH'])
@@ -91,4 +95,40 @@ def create_course(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def create_deadline(request):
+    if request.method == 'POST':
+        serializer = DeadlineSerializer(data=request.data)
+        if serializer.is_valid():
+            with transaction.atomic():
+                deadline = serializer.save()
+
+                students = Student.objects.all()
+                for student in students:
+                    send_mail(
+                        f"New Deadline: {deadline.name}",
+                        f"A new deadline '{deadline.name}' has been created. Make sure to check it.",
+                        'sarahabuirmeileh@gmail.com',
+                        [student.email],
+                    )
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE', 'PATCH'])
+def delete_edit_deadline(request, deadline_id):
+    deadline = get_object_or_404(Deadline, pk=deadline_id)
+
+    if request.method == 'DELETE':
+        deadline.delete()
+        return JsonResponse({"message": "Deadline deleted successfully"}, status=status.HTTP_200_OK)
+
+    elif request.method == 'PATCH':
+        serializer = DeadlineSerializer(deadline, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

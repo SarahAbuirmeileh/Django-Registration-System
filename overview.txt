@@ -31,7 +31,8 @@
 /student -> delete  (delete student)
 /student/course -> put (adding course to student's schedule, display just the courses that he completed it's  prerequisites)
 /student/schedule -> get   (view the student's current course schedule)
-/student/notifications -> get (display notifications, reminders and deadlines)
+/student/deadline -> get (display deadlines )
+
 
 Additional work:
 Room table :

@@ -24,3 +24,9 @@ class CourseDetailSerializer(serializers.ModelSerializer):
                 'prerequisite_course_name': obj.prerequisites.course_name,
             }
         return None
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = '__all__'
