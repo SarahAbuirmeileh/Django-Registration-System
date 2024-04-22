@@ -26,6 +26,15 @@
                     </li>
                     <!-- Check if the user is authenticated -->
                     {% if request.session.student_id %}
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'get_all_courses' %}">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'schedule-creation-retrieval' %}">Schedules</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'generate_reports' %}">Reports</a>
+                        </li>
                         <!-- User is authenticated, show logout button -->
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
