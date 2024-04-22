@@ -1,14 +1,30 @@
 {% extends "master.html" %}
+{% load static %}
 
 {% block title %}
     Home
 {% endblock %}
 
 {% block content %}
-    <h2>Welcome {{ student_name }}</h2>
-    <p>This is your home page. You are logged in.</p>
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="img-fluid" width="80px">
+                <span>Enrollify</span>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'home' %}" class="btn btn-primary">Home</a>
+                <!-- Check if the user is authenticated -->
+                {% if request.session.student_id %}
+                    <!-- User is authenticated, show logout button -->
+                    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+                {% else %}
+                    <!-- User is not authenticated, show login and register buttons -->
+                    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+                {% endif %}
+            </div>
+        </div>
+        <img src="{% static 'images/student1.jpg' %}" alt="Photo 1" class="img-fluid">
+    </div>
 {% endblock %}

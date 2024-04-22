@@ -28,12 +28,14 @@ def login(request):
 def logout(request):
     if 'student_id' in request.session:
         del request.session['student_id']
-    return redirect('login')  # Redirect to login page after logout
+    return redirect('home')  # Redirect to login page after logout
 
 
 def home(request, student_name):
     return render(request, 'home.html', {'student_name': student_name})
 
+def get_home(request):
+    return render(request, 'home.html')
 
 # I tried to use django forms
 # from django.contrib.auth.forms import UserCreationForm
