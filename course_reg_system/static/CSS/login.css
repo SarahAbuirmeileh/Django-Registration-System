@@ -1,0 +1,31 @@
+.container {
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    height:80vh;
+    padding:0;
+}
+
+form {
+    padding: 40px 20px;
+    width: 40%;
+}
+
+img {
+    width: calc(60%); /* Calculate width based on remaining space after considering form padding */
+    height: 100%;
+}
+
+/* Media query for tablets and mobile devices */
+@media screen and (max-width: 768px) {
+    form {
+        width: 100%;
+    }
+    img {
+        width: 100%;
+    }
+}
+button {
+    background-color:#2D82B5;
+}
