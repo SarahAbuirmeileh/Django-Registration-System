@@ -1,31 +1,53 @@
 {% extends "master.html" %}
+{% load static %}
+
 
 {% block title %}
     Registration
 {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static '/CSS/register.css' %}">
+{% endblock %}
+
 {% block content %}
-    <h2>Register</h2>
+ <div class="container-fluid">
 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        <div class="row">
 
-    <form method="POST">
-        {% csrf_token %}
-        <label for="student_id">Student ID:</label><br>
-        <input type="text" id="student_id" name="student_id" required><br>
-        <label for="student_name">Student Name:</label><br>
-        <input type="text" id="student_name" name="student_name" required><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br>
-        <button type="submit">Register</button>
-    </form>
+            <div class="content  shadow col-md-12">
+
+                <h2 class="shadow">Register To Enrollify </h2>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger messages mb-4" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="form">
+                    <form method="POST">
+                         {% csrf_token %}
+
+                        <input type="text" id="student_id" name="student_id" required placeholder="Student Number"><br>
+
+                        <input type="text" id="student_name" name="student_name" required
+                            placeholder="Student Name"><br>
+
+                        <input type="email" id="email" name="email" required placeholder="Email"><br>
+
+                        <input type="password" id="password" name="password" required placeholder="Password"><br>
+                        <button class="btn btn-primary form-control" type="submit">Register</button>
+                    </form>
+                    <img src="{% static 'images/logo.png' %}" alt="logo">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 
 {% endblock %}
