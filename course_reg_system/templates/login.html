@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="{% static '/CSS/login.css' %}">
 {% endblock %}
 
+{% block nav %}{% endblock %}
+
 {% block content %}
 <div class="container shadow">
             <form method="POST" action="{% url 'login' %}">

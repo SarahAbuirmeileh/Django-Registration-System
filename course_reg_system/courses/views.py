@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.http import HttpResponse
+from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import Course
@@ -22,7 +23,8 @@ def get_all_courses(request):
     if request.method == 'GET':
         courses = Course.objects.all()
         serializer = CourseDetailSerializer(courses, many=True)
-        return Response(serializer.data)
+        return render(request, 'courses.html', {'courses': serializer.data})
+        # return Response(serializer.data)
 
 @api_view(['GET'])
 def search_course(request):
