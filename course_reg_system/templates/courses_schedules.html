@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Student Courses Schedules
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for schedule in schedules %}
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <span class="badge badge-primary">{{ schedule.course_name }}</span>
+                                <span class="badge badge-secondary">{{ schedule.instructor_name }}</span>
+                            </h5>
+                            <p class="card-text">
+                                <i class="far fa-calendar-alt"></i> {{ schedule.days }}
+                            </p>
+                            <p class="card-text">
+                                <i class="far fa-clock"></i> {{ schedule.start_time }} - {{ schedule.end_time }}
+                            </p>
+                            <p class="card-text">
+                                <i class="fas fa-map-marker-alt"></i> Room: {{ schedule.room_number }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
