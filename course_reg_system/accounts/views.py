@@ -13,7 +13,7 @@ def login(request):
         password = request.POST['password']
         try:
             student = Student.objects.get(email=email)
-            if password == student.password:
+            if check_password(password, student.password):
                 # Authentication successful, set session variables
                 # This will be changed, we will use JWT later
                 request.session['student_id'] = student.student_id
