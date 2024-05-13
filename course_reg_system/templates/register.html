@@ -17,7 +17,7 @@
 
             <div class="content  shadow col-md-12">
 
-                <h2 class="shadow">Register To Enrollify </h2>
+
 
                 {% if messages %}
                     {% for message in messages %}
@@ -30,7 +30,7 @@
                 <div class="form">
                     <form method="POST">
                          {% csrf_token %}
-
+                        <h2 class="text-center mb-5">Register</h2>
                         <input type="text" id="student_id" name="student_id" required placeholder="Student Number"><br>
 
                         <input type="text" id="student_name" name="student_name" required
