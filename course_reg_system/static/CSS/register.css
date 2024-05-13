@@ -32,18 +32,14 @@ form{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
-}
-
-input{
-    border-radius: 5px;
 }
 
 img {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
     margin-top: 20px;
     margin-left: 30px;
+    border-radius:60%;
 }
 
 @media screen and (max-width: 768px) {

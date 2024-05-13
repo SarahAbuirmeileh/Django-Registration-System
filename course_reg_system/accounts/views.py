@@ -14,7 +14,7 @@ def login(request):
         password = request.POST['password']
         try:
             student = Student.objects.get(email=email)
-            if password == student.password:
+            if check_password(password, student.password):
                 # Authentication successful, set session variables
                 request.session['student_id'] = student.student_id
                 # request.session.modified = True

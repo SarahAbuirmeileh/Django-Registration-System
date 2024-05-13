@@ -17,7 +17,7 @@
 
             <div class="content  shadow col-md-12">
 
-                <h2 class="shadow">Register To Enrollify </h2>
+
 
                 {% if messages %}
                     {% for message in messages %}
@@ -30,18 +30,18 @@
                 <div class="form">
                     <form method="POST">
                          {% csrf_token %}
+                        <h2 class="text-center mb-5">Register</h2>
+                            <input type="text" id="student_id" class="form-control mb-2 " name="student_id" required placeholder="Student Number"><br>
 
-                        <input type="text" id="student_id" name="student_id" required placeholder="Student Number"><br>
+                            <input type="text" id="student_name" name="student_name" required
+                                placeholder="Student Name" class="form-control mb-2 "><br>
 
-                        <input type="text" id="student_name" name="student_name" required
-                            placeholder="Student Name"><br>
+                            <input type="email" id="email" name="email" required placeholder="Email" class="form-control mb-2 "><br>
 
-                        <input type="email" id="email" name="email" required placeholder="Email"><br>
-
-                        <input type="password" id="password" name="password" required placeholder="Password"><br>
+                            <input type="password" id="password" name="password" required placeholder="Password" class="form-control mb-4 "><br>
                         <button class="btn btn-primary form-control" type="submit">Register</button>
                     </form>
-                    <img src="{% static 'images/logo.png' %}" alt="logo">
+                    <img src="{% static 'images/student1.jpg' %}" alt="student">
                 </div>
             </div>
 
