@@ -37,3 +37,27 @@ const addCourseToSchedule = async (courseId) => {
         displayMessage("Error adding course: " + "", true);
     }
 };
+
+const deleteCourse = async (courseId) => {
+    const URL = `http://127.0.0.1:8000/admin/courses/${courseId}/`;
+
+    try {
+        const response = await fetch(URL, {
+            method: 'DELETE',
+        });
+
+        const res = await response.json();
+        msg = JSON.stringify(res);
+        displayMessage(msg);
+
+    } catch (error) {
+        displayMessage("Error deleting course: " + error.message, true);
+    }
+};
+
+document.querySelectorAll('.delete-course').forEach(button => {
+    button.addEventListener('click', function() {
+        const courseId = this.getAttribute('course_code');
+        deleteCourse(courseId);
+    });
+});
