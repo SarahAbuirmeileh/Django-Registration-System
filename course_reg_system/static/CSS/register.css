@@ -32,11 +32,6 @@ form{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
-}
-
-input{
-    border-radius: 5px;
 }
 
 img {
