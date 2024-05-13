@@ -10,12 +10,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="container shadow">
-            <form method="POST" action="{% url 'login' %}">
-                {% csrf_token %}
-                <h2 class="text-center mb-5">Login</h2>
-                <input type="email" class="form-control mb-4 p-2" id="email" placeholder="Email" name="email" required>
-                <input type="password" class="form-control mb-5 p-2" id="password" placeholder="Password" name="password" required>
+ <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="content  shadow col-md-12">
+
+                <h2 class="shadow">Login To Enrollify </h2>
+
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-danger messages mb-4" role="alert">
@@ -23,8 +25,30 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                <button type="submit" class="btn btn-primary form-control">Login</button>
-            </form>
-            <img src="{% static 'images/student1.jpg' %}" alt="Student Image" class="">
-</div>
+
+                <div class="form">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <h2 class="text-center mb-5">Login</h2>
+                        <input type="email" class="form-control mb-4 p-2" id="email" placeholder="Email" name="email" required>
+                        <input type="password" class="form-control mb-5 p-2" id="password" placeholder="Password" name="password" required>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger messages mb-4" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary form-control">Login</button>
+                    </form>
+                    <img src="{% static 'images/student1.jpg' %}" alt="Student Image" class="">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
 {% endblock %}
+
