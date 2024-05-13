@@ -1,0 +1,19 @@
+.row{
+    margin: 25px;
+}
+.card{
+    height: 100%;
+}
+
+.card-title{
+font-size: 20px;
+    color: black;
+    font-weight: normal;
+}
+
+.card-text{
+font-size: 20px;
+    color: black;
+    font-weight: normal;
+            width: 100%;
+}

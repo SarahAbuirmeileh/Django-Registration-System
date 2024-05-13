@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from students.models import Student
+from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -15,9 +16,9 @@ def login(request):
             student = Student.objects.get(email=email)
             if check_password(password, student.password):
                 # Authentication successful, set session variables
-                # This will be changed, we will use JWT later
                 request.session['student_id'] = student.student_id
-                return redirect('home', student_name=student.student_name)  # Redirect to home after login
+                # request.session.modified = True
+                return redirect('home', student_name=student.student_name)  
             else:
                 messages.error(request, 'Invalid email or password')
         except Student.DoesNotExist:
@@ -28,7 +29,7 @@ def login(request):
 def logout(request):
     if 'student_id' in request.session:
         del request.session['student_id']
-    return redirect('home')  # Redirect to login page after logout
+    return redirect('login')  # Redirect to login page after logout
 
 
 def home(request, student_name):

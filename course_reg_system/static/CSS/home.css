@@ -31,7 +31,7 @@
     gap: 25px;
     flex-wrap:wrap;
 }
-p {
+.entry-title {
     font-size: 40px;
     font-weight: bold;
     width: 45%;
@@ -44,7 +44,7 @@ p {
 
 @media (max-width: 991.98px) {
     /* Tablet devices */
-    .class-image, p {
+    .class-image, .entry-title {
         width: 100%;
     }
     .nav-link {
@@ -55,7 +55,7 @@ p {
 
 @media (max-width: 767.98px) {
     /* Mobile devices */
-    .class-image, p {
+    .class-image, .entry-title{
         width: 100%;
     }
     .nav-link {
