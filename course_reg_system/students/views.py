@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .models import Student, StudentRegistration, Deadline
 from .serializers import StudentSerializer, DeadlineSerializer
 from courses.serializers import CourseSerializer
+from courses.models import Course
 
 
 @api_view(['GET'])
@@ -38,20 +39,21 @@ def student_details(request, id):
 
 
 # views.py
+from django.http import HttpResponse
 
 @api_view(['PUT'])
-def add_course_to_schedule(request, student_id, course_id):
+def add_course_to_schedule(request, student_id, course_code):
     try:
         student = Student.objects.get(student_id=student_id)
-        course = Course.objects.get(id=course_id)
+        course = Course.objects.get(course_code=course_code)
     except (Student.DoesNotExist, Course.DoesNotExist):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     # Check if the student is already registered for the course
-    if student.courses.filter(id=course_id).exists():
+    if student.courses.filter(course_code=course_code).exists():
         return Response({"error": "Student is already registered for this course"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Create a new StudentRegistration instance to register the student for the course
+
     registration = StudentRegistration.objects.create(student=student, course=course)
     registration.save()
 

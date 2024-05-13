@@ -13,7 +13,7 @@
 <!--    <h1>Courses</h1>-->
     <div class="row">
         {% for course in courses %}
-            <div class="col-md-4 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="card shadow">
                     <div class="card-body">
                         <h5 class="card-title">{{ course.course_name }}</h5>
@@ -24,8 +24,20 @@
                         <p class="card-text"><strong>Schedule:</strong> {{ course.schedule }}</p>
                         <p class="card-text"><strong>Available Spots:</strong> {{ course.available_spots }}</p>
                     </div>
+
+                    <div class="buttons">
+                        <button class="btn btn-primary m-2" id ="add-course">Add course</button>
+                        <button class="btn btn-primary m-2" id="edit-course">Edit course</button>
+                        <button class="btn btn-primary m-2" id="delete-course">Delete course</button>
+                    </div>
+                    
                 </div>
             </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static '/js/course.js' %}"></script>
 {% endblock %}

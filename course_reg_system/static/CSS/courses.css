@@ -19,3 +19,13 @@ font-size: 20px;
     font-weight: normal;
             width: 100%;
 }
+
+button{
+    width: 150px;
+    background-color:#015C92 !important;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-around;
+}
