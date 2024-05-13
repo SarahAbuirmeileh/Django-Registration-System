@@ -14,9 +14,10 @@
     <div class="row">
         {% for course in courses %}
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-body">
                         <h5 class="card-title">{{ course.course_name }}</h5>
+                        <p class="card-text">{{ course.course_code }}</p>
                         <p class="card-text">{{ course.instructor_name }}</p>
                         <p class="card-text">{{ course.description }}</p>
                         <p class="card-text"><strong>Prerequisites:</strong> {{ course.prerequisites }}</p>

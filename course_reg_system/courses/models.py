@@ -2,7 +2,7 @@ from django.db import models
 from schedules.models import CourseSchedule
 
 class Course(models.Model):
-    course_code = models.CharField(max_length=10, unique=True)
+    course_code = models.CharField(primary_key=True, max_length=10)
     course_name = models.CharField(max_length=100)
     description = models.TextField()
     instructor_name = models.CharField(max_length=100)

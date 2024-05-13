@@ -3,6 +3,8 @@
 }
 .card{
     height: 100%;
+    /*background-color:#53A7D8;*/
+    background: linear-gradient(#53A7D8, white,#53A7D8);
 }
 
 .card-title{

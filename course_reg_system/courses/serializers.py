@@ -15,13 +15,12 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'course_code', 'course_name', 'description', 'instructor_name', 'schedule', 'prerequisites', 'capacity']
+        fields = ['course_code', 'course_name', 'description', 'instructor_name', 'schedule', 'prerequisites', 'capacity']
 
     def get_prerequisites(self, obj):
         if obj.prerequisites:
             return {
-                'prerequisite_course_code': obj.prerequisites.course_code,
-                'prerequisite_course_name': obj.prerequisites.course_name,
+                obj.prerequisites.course_name + ' ' + obj.prerequisites.course_code
             }
         return None
 
