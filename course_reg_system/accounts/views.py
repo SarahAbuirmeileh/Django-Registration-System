@@ -15,9 +15,7 @@ def login(request):
         try:
             student = Student.objects.get(email=email)
             if check_password(password, student.password):
-                # Authentication successful, set session variables
                 request.session['student_id'] = student.student_id
-                # request.session.modified = True
                 return redirect('home', student_name=student.student_name)  
             else:
                 messages.error(request, 'Invalid email or password')

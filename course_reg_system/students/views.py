@@ -42,8 +42,9 @@ def student_details(request, id):
 from django.http import HttpResponse
 
 @api_view(['PUT'])
-def add_course_to_schedule(request, student_id, course_code):
+def add_course_to_schedule(request,course_code):
     try:
+        student_id=request.session['student_id']
         student = Student.objects.get(student_id=student_id)
         course = Course.objects.get(course_code=course_code)
     except (Student.DoesNotExist, Course.DoesNotExist):
@@ -51,7 +52,7 @@ def add_course_to_schedule(request, student_id, course_code):
 
     # Check if the student is already registered for the course
     if student.courses.filter(course_code=course_code).exists():
-        return Response({"error": "Student is already registered for this course"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Student is already registered for this course"}, status=status.HTTP_400_BAD_REQUEST)
 
 
     registration = StudentRegistration.objects.create(student=student, course=course)
@@ -61,8 +62,9 @@ def add_course_to_schedule(request, student_id, course_code):
 
 
 @api_view(['GET'])
-def get_student_schedule(request, student_id):
+def get_student_schedule(request):
     try:
+        student_id=request.session['student_id']
         student = Student.objects.get(student_id=student_id)
     except Student.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)

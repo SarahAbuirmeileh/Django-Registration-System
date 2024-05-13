@@ -12,6 +12,8 @@
 {% block content %}
 <!--    <h1>Courses</h1>-->
     <div class="row">
+        <div id="message-container" class="col-md-4 offset-4"> </div>
+        <div class="col-md-4"></div>
         {% for course in courses %}
             <div class="col-md-3 mb-4">
                 <div class="card shadow">
@@ -26,9 +28,9 @@
                     </div>
 
                     <div class="buttons">
-                        <button class="btn btn-primary m-2" id ="add-course">Add course</button>
-                        <button class="btn btn-primary m-2" id="edit-course">Edit course</button>
-                        <button class="btn btn-primary m-2" id="delete-course">Delete course</button>
+                        <button class="btn btn-primary m-2 add-course-button" course_code="{{ course.course_code }}">Add course</button>
+                        <button class="btn btn-primary m-2" id="edit-course" course_code="{{ course.course_code }}">Edit course</button>
+                        <button class="btn btn-primary m-2" id="delete-course" course_code="{{ course.course_code }}">Delete course</button>
                     </div>
                     
                 </div>
