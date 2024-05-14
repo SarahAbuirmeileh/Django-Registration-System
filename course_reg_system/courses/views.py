@@ -48,4 +48,4 @@ def search_course(request):
         courses = courses.filter(instructor_name__icontains=query_instructor_name)
 
     serializer = CourseDetailSerializer(courses, many=True)
-    return Response(serializer.data)
+    return render(request, 'courses.html', {'courses': serializer.data})

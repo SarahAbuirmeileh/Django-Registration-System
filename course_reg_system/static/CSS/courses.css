@@ -29,3 +29,17 @@ button{
     display: flex;
     justify-content: space-around;
 }
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input[type="search"] {
+    margin-right: 10px;
+}
+
+.course-nav {
+    padding-right: 25px !important;
+    margin-left: 10px;
+}

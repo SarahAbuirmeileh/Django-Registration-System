@@ -7,11 +7,22 @@
 
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static '/CSS/courses.css' %}">
+   
 {% endblock %}
 
 {% block content %}
-<!--    <h1>Courses</h1>-->
     <div class="row">
+
+        <nav class="navbar navbar-light bg-light justify-content-between course-nav">
+            <h2 class="navbar-brand">Courses</h2>
+            <form class="form-inline nav-form" action="{% url 'search_course' %}" method="GET">
+                <div class="search-container">
+                    <input class="form-control mr-1" type="search" name="course_name" placeholder="Course Name" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </div>
+            </form>            
+        </nav>
+        
         <div id="message-container" class="col-md-4 offset-4"> </div>
         <div class="col-md-4"></div>
         {% for course in courses %}
@@ -37,9 +48,4 @@
             </div>
         {% endfor %}
     </div>
-{% endblock %}
-
-
-{% block scripts %}
-    <script src="{% static '/js/course.js' %}"></script>
 {% endblock %}
