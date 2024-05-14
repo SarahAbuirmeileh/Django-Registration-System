@@ -61,3 +61,30 @@ document.querySelectorAll('.delete-course').forEach(button => {
         deleteCourse(courseId);
     });
 });
+
+document.querySelectorAll('.edit-course').forEach(button => {
+    button.addEventListener('click', function() {
+        const courseId = this.getAttribute('course_code');
+        editCourse(courseId);
+    });
+});
+
+
+const editCourse = async (courseId) => {
+    const URL = `http://127.0.0.1:8000/admin/courses/${courseId}/`; 
+    try {
+        const response = await fetch(URL);
+        if (!response.ok) {
+            throw new Error('Failed to fetch course details');
+        }
+
+        const html = await response.text();
+        document.documentElement.innerHTML = html; 
+
+        history.pushState({}, '', URL); 
+
+    } catch (error) {
+        console.error("Error fetching course details: ", error.message);
+        
+    }
+};

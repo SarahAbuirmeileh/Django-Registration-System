@@ -1,43 +1,53 @@
 from django.core.mail import send_mail
 from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from schedules.serializers import CourseScheduleSerializer
+from courses.serializers import CourseDetailSerializer
 from courses.models import Course
 from students.models import StudentRegistration
 from .serializers import CourseSerializer
 from students.serializers import DeadlineSerializer
 from students.models import Student, Deadline
+from schedules.models import CourseSchedule
 
-
-@api_view(['DELETE', 'PATCH'])
+@api_view(['DELETE', 'POST', 'GET'])
 def delete_edit_course(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+
     if request.method == 'DELETE':
-        try:
-            course = Course.objects.get(pk=course_id)
-        except Course.DoesNotExist:
-            return Response({"message": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+        if course.delete():
+            return Response({"message": "Course deleted successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Failed to delete course"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        if request.method == 'DELETE':
-            if course.delete():
-                return JsonResponse({"message": "Course deleted successfully"}, status=status.HTTP_200_OK)
-            else:
-                return JsonResponse({"message": "Failed to delete course"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    elif request.method == 'PATCH':
-        try:
-            course = Course.objects.get(pk=course_id)
-        except Course.DoesNotExist:
-            return Response({"message": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+    elif request.method == 'POST':
+        course_fields = ['course_code', 'course_name', 'description', 'instructor_name', 'capacity']
+        for field in course_fields:
+            if field in request.POST and request.POST[field] != '':
+                setattr(course, field, request.POST[field])
+        course.save() 
+        
+        return redirect('get_all_courses')
 
-        if request.method == 'PATCH':
-            serializer = CourseSerializer(course, data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'GET':
+        schedules = CourseSchedule.objects.all()
+        courses = Course.objects.all()
 
+        serializer = CourseDetailSerializer(courses, many=True)
+        prerequisites = serializer.data
+        serializer = CourseScheduleSerializer(schedules, many=True)
+        schedules = serializer.data
+    
+        context = {
+            'schedules': schedules,
+            'prerequisites': prerequisites,
+        }
+
+        return render(request, 'course_edit.html', context)
 
 @api_view(['GET'])
 def generate_reports(request):
