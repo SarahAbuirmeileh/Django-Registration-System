@@ -25,7 +25,33 @@ class CourseDetailSerializer(serializers.ModelSerializer):
         return None
 
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseDetailSerializer(serializers.ModelSerializer):
+    schedule = CourseScheduleSerializer()
+    prerequisites = serializers.SerializerMethodField()
+    available_spots = serializers.SerializerMethodField()
+
     class Meta:
         model = Course
-        fields = '__all__'
+        fields = ['course_code', 'course_name', 'description', 'instructor_name', 'schedule', 'prerequisites', 'capacity', 'available_spots']
+
+    def get_prerequisites(self, obj):
+        if obj.prerequisites:
+            return f"{obj.prerequisites.course_name} {obj.prerequisites.course_code}"
+        return None
+
+    def get_available_spots(self, obj):
+        if obj.capacity and obj.students.exists():
+            available_spots = obj.capacity - obj.students.count()
+            return f"{available_spots}/{obj.capacity}"
+        return f"{obj.capacity}/{obj.capacity}"
+
+class CourseSerializer(serializers.ModelSerializer):
+    available_spots = serializers.SerializerMethodField()
+    class Meta:
+        model = Course
+        fields = ['course_code', 'course_name', 'description', 'instructor_name', 'schedule', 'prerequisites', 'capacity', 'available_spots']
+
+    def get_available_spots(self, obj):
+        if obj.capacity and obj.students.exists():
+            return obj.capacity - obj.students.count()
+        return obj.capacity

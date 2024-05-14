@@ -24,7 +24,7 @@ def get_all_courses(request):
         courses = Course.objects.all()
         serializer = CourseDetailSerializer(courses, many=True)
         return render(request, 'courses.html', {'courses': serializer.data})
-        # return Response(serializer.data)
+        
 
 @api_view(['GET'])
 def search_course(request):
