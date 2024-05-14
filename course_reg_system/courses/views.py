@@ -42,8 +42,9 @@ def get_all_courses(request):
                 courses = Course.objects.none()
         else:
             return redirect('login')
-
-    return render(request, 'courses.html', {'courses': courses})
+        
+    serializer = CourseDetailSerializer(courses, many=True)
+    return render(request, 'courses.html', {'courses': serializer.data})
      
 
 @api_view(['GET'])
