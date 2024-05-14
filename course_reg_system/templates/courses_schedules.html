@@ -1,37 +1,39 @@
-{% extends "master.html" %}
-{% load static %}
-
-{% block title %}
-    Student Courses Schedules
-{% endblock %}
-
-{% block css %}
-{% endblock %}
-
-{% block content %}
-    <div class="container">
-        <div class="row">
-            {% for schedule in schedules %}
-                <div class="col-md-6">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <span class="badge badge-primary">{{ schedule.course_name }}</span>
-                                <span class="badge badge-secondary">{{ schedule.instructor_name }}</span>
-                            </h5>
-                            <p class="card-text">
-                                <i class="far fa-calendar-alt"></i> {{ schedule.days }}
-                            </p>
-                            <p class="card-text">
-                                <i class="far fa-clock"></i> {{ schedule.start_time }} - {{ schedule.end_time }}
-                            </p>
-                            <p class="card-text">
-                                <i class="fas fa-map-marker-alt"></i> Room: {{ schedule.room_number }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+{% extends "master.html" %} {% load static %} {% block title %} Student Courses
+Schedules {% endblock %} {% block css %}
+<!-- Add any custom CSS styles here -->
+{% endblock %} {% block content %}
+<div class="container">
+  <div class="row">
+    {% if schedules %}
+    <div class="col-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Course Name</th>
+            <th>Instructor Name</th>
+            <th>Days</th>
+            <th>Time</th>
+            <th>Room</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for schedule in schedules %}
+          <tr>
+            <td>{{ schedule.course.course_name }}</td>
+            <td>{{ schedule.course.instructor_name }}</td>
+            <td>{{ schedule.days }}</td>
+            <td>{{ schedule.start_time }} - {{ schedule.end_time }}</td>
+            <td>{{ schedule.room_number }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+    {% else %}
+    <div class="col-12">
+      <div class="alert alert-info" role="alert">No Schedules Found.</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

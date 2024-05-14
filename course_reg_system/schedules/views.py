@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import CourseSchedule
+from courses.models import Course
 from .serializers import CourseScheduleSerializer
 from students.models import StudentRegistration
 from django.shortcuts import render, redirect
@@ -25,19 +26,22 @@ def schedule_creation_retrieval(request):
                 registered_courses = StudentRegistration.objects.filter(student=current_student_id).values_list('course', flat=True)
 
                 # Fetch all schedules associated with the registered courses
-                schedules = CourseSchedule.objects.filter(course__id__in=registered_courses)
-                serializer = CourseScheduleSerializer(schedules, many=True)
-                return render(request, 'courses_schedules.html', {'schedules': serializer.data})
+                if registered_courses:
+                    # Retrieve the schedule IDs associated with the registered courses
+                    schedule_ids = Course.objects.filter(pk__in=registered_courses).values_list('schedule_id', flat=True)
+
+                    # Fetch the schedules based on the schedule IDs
+                    schedules = CourseSchedule.objects.filter(pk__in=schedule_ids)
+                    serializer = CourseScheduleSerializer(schedules, many=True)
+                    return render(request, 'courses_schedules.html', {'schedules': serializer.data})
+                else:
+                    # Handle the case where the student has not registered for any courses yet
+                    return render(request, 'courses_schedules.html', {'schedules': []})
             except StudentRegistration.DoesNotExist:
                 # Handle the case where the student does not exist
                 return render(request, 'courses_schedules.html', {'schedules': []})
-        else:
-            return redirect("login")
-            # Handle the case where the student ID is not provided
-            # schedules = CourseSchedule.objects.all()
-            # serializer = CourseScheduleSerializer(schedules, many=True)
-            
-            # return render(request, 'courses_schedules.html', {'schedules': serializer.data})
+    else:
+        return redirect("login")
 
 
 @api_view(['PATCH', 'DELETE', 'GET'])
