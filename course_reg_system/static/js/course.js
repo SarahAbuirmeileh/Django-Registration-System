@@ -88,3 +88,21 @@ const editCourse = async (courseId) => {
         
     }
 };
+
+document.getElementById("create-btn").addEventListener("click", async ()=>{
+    
+    const URL = `http://127.0.0.1:8000/admin/courses/`;
+
+    try {
+        const response = await fetch(URL);
+
+        const html = await response.text();
+        document.documentElement.innerHTML = html; 
+
+        history.pushState({}, '', URL); 
+
+    } catch (error) {
+        console.error("Error fetching course details: ", error.message);
+        
+    }
+})

@@ -98,14 +98,30 @@ def generate_reports(request):
     return render(request, 'courses_reports.html', data)
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def create_course(request):
     if request.method == 'POST':
         serializer = CourseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return redirect('get_all_courses')
+        return redirect('get_all_courses')
+    
+    elif request.method == 'GET':
+        schedules = CourseSchedule.objects.all()
+        courses = Course.objects.all()
+
+        serializer = CourseDetailSerializer(courses, many=True)
+        prerequisites = serializer.data
+        serializer = CourseScheduleSerializer(schedules, many=True)
+        schedules = serializer.data
+    
+        context = {
+            'schedules': schedules,
+            'prerequisites': prerequisites,
+        }
+
+        return render(request, 'course_create.html', context)
 
 
 @api_view(['POST'])
