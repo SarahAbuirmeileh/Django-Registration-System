@@ -40,12 +40,24 @@
 
                     <div class="buttons">
                         <button class="btn btn-primary m-2 add-course-button" course_code="{{ course.course_code }}">Add course</button>
-                        <button class="btn btn-primary m-2 edit-course" course_code="{{ course.course_code }}">Edit course</button>
-                        <button class="btn btn-primary m-2 delete-course" course_code="{{ course.course_code }}">Delete course</button>
+                        {% if user.is_authenticated and user.is_staff %}
+                            <button class="btn btn-primary m-2 edit-course" course_code="{{ course.course_code }}">Edit course</button>
+                            <button class="btn btn-primary m-2 delete-course" course_code="{{ course.course_code }}">Delete course</button>
+                        {% endif %}
                     </div>
                     
                 </div>
             </div>
         {% endfor %}
+        {% if user.is_authenticated and user.is_staff %}
+            <button type="button" class="btn btn-primary create-btn" id="create-btn">Create Course</button>
+        {% endif %}
+        
     </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static '/js/course.js' %}"></script>
 {% endblock %}
