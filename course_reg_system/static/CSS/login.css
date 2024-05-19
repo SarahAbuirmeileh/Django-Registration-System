@@ -1,13 +1,16 @@
-
-.content{
+.container{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     background-color: white;
     border-radius: 20px;
-}
 
+}
+.container-fluid > .row > .content{
+    margin: 0;
+    gap: 0;
+}
 .content h2 {
     margin: 15px 0px;
 }
@@ -25,7 +28,8 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: 30px;
+    padding: 20px;
+    flex-wrap: wrap;
 }
 
 form{

@@ -6,22 +6,23 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Courses Reports</h1>
-    {% for course_enrollment in data.courses_enrollments %}
-        <div>
-            <h2>Course Details</h2>
-            <p>Course Code: {{ course_enrollment.course_code }}</p>
+    <div class="container mt-5">
+        <div class="row">
+            {% for course in courses_data %}
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ course.course_code }}</h5>
+                            <span class="text-muted">Instructor: {{ course.instructor_name }}</span>
+                            <p class="card-text mt-4">
+                                <span class="badge bg-primary">Popularity Score: {{ course.popularity_score }}</span>
+                                <br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-
-        <div>
-            <h2>Enrollment Information</h2>
-            <p>Total Enrollment: {{ course_enrollment.course_code }}</p>
-        </div>
-
-        <div>
-            <h2>Popularity Information</h2>
-            <p>Popularity Score: {{ data.courses_popularity.course_code }}</p>
-        </div>
-        <hr>
-    {% endfor %}
+    </div>
 {% endblock %}
+

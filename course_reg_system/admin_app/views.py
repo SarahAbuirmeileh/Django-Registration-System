@@ -69,13 +69,10 @@ def generate_reports(request):
             courses_enrollments = {}
             for reg in student_regs:
                 try:
-                    # Check if the registration has a valid course associated with it
-                    if reg.course:
-                        course_code = reg.course.course_code
-                        if course_code in courses_enrollments:
-                            courses_enrollments[course_code] += 1
-                        else:
-                            courses_enrollments[course_code] = 1
+                    if reg.course_id in courses_enrollments:
+                        courses_enrollments[reg.course_id] += 1
+                    else:
+                        courses_enrollments[reg.course_id] = 1
                 except Exception as e:
                     print(f"Error processing registration {reg.registration_id}: {e}")
                         
@@ -83,17 +80,15 @@ def generate_reports(request):
             courses = Course.objects.all()
 
             # Calculate course popularity
-            courses_popularity = {}
+            courses_data = []
             for course in courses:
-                # Calculating popularity based on number of enrollments
-                popularity_score = courses_enrollments.get(course.course_code, 0)
-                # We can add more factors here to determine course popularity
-                courses_popularity[course.course_code] = popularity_score
+                if course.id in courses_enrollments:
+                    popularity_score = courses_enrollments.get(course.id, 0)
+                    instructor_name = course.instructor_name  
+                    courses_data.append({'course_code': course.course_code, 'popularity_score': popularity_score, 'instructor_name': instructor_name})
 
             data = {
-                'courses_enrollments': courses_enrollments,
-                'courses_popularity': courses_popularity,
-                # Add more data for other relevant reports
+                'courses_data': courses_data,
             }
             return render(request, 'courses_reports.html', data)
             # else:

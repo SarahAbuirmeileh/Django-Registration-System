@@ -58,3 +58,6 @@ button{
     cursor: pointer;
     z-index: 9999; 
 }
+.search{
+    color: white;
+}

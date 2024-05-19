@@ -7,7 +7,6 @@
 
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static '/CSS/courses.css' %}">
-   
 {% endblock %}
 
 {% block content %}
@@ -18,7 +17,7 @@
             <form class="form-inline nav-form" action="{% url 'search_course' %}" method="GET">
                 <div class="search-container">
                     <input class="form-control mr-1" type="search" name="course_name" placeholder="Course Name" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-outline-success search" type="submit">Search</button>
                 </div>
             </form>            
         </nav>
