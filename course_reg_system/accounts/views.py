@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from accounts.models import UserImage
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -18,12 +19,18 @@ def login(request):
         password = request.POST['password']
         try:
             student = Student.objects.get(email=email)
+            user = User.objects.get(email=email)
             std_name = None
             if student is not None:
                 std_name = student.student_name
-            std = authenticate (username= std_name, password=password)
+            std = authenticate(username=std_name, password=password)
             if std is not None:
                 request.session['student_id'] = student.student_id
+                try:
+                    user_image = UserImage.objects.get(user=user)
+                    request.session['profile_image_url'] = user_image.image.url if user_image.image else None
+                except UserImage.DoesNotExist:
+                    request.session['profile_image_url'] = None
                 return redirect('home', student_name=student.student_name)  
             else:
                 messages.error(request, 'Invalid email or password')
@@ -35,7 +42,8 @@ def login(request):
 def logout(request):
     if 'student_id' in request.session:
         del request.session['student_id']
-    return redirect('login')  # Redirect to login page after logout
+        del request.session['profile_image_url']
+    return redirect('login') 
 
 
 def home(request, student_name):
@@ -51,6 +59,7 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         student_id = request.POST.get('student_id')
+        profile_image = request.FILES.get('profile_image')
 
         try:
             # Validate email uniqueness
@@ -72,6 +81,12 @@ def register(request):
             # Save user
             user = User.objects.create_user(username=student_name, email=email, password=password)
             student = Student.objects.create(student_name=student_name, email=email, student_id=student_id)
+
+            # Save profile image
+            if profile_image:
+                # user_image = UserImage.objects.create(user=user, image=profile_image, caption="User Profile")
+                user_image = UserImage(image=profile_image, user=user, caption="Profile Image")
+                user_image.save()
             messages.success(request, 'Registration successful. Please log in.')
             return redirect('login')
         except Exception as e:

@@ -6,6 +6,7 @@
 }
 .navbar .container{
     margin: 0px;
+    flex-direction: row;
 }
 .logo{
      width:50px;

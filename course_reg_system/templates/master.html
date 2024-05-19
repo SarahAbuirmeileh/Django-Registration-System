@@ -22,9 +22,18 @@
                 <img class="logo img-fluid" src="{% static 'images/logo.png' %}" alt="Logo">
                 <span class="title">Enrollify</span>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                {% comment %} <span class="navbar-toggler-icon"></span> {% endcomment %}
+                {% if request.session.student_id %}
+                <div class="d-block d-lg-none">
+                    {% if request.session.profile_image_url %}
+                        <img src="{{ request.session.profile_image_url }}" alt="Profile Image" width="70" height="70">
+                    {% else %}
+                        <img src="{% static 'images/profile.png' %}" alt="Profile Image" width="70" height="70">
+                    {% endif %}
+                    </div>
+                {% endif %}
+            </div>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
@@ -55,6 +64,15 @@
                         </li>
                     {% endif %}
                 </ul>
+                {% if request.session.student_id %}
+                 <div class="d-none d-lg-block">
+                    {% if request.session.profile_image_url %}
+                        <img src="{{ request.session.profile_image_url }}" alt="Profile Image" width="70" height="70">
+                    {% else %}
+                        <img src="{% static 'images/profile.png' %}" alt="Profile Image" width="70" height="70">
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
         </div>
     </nav>
