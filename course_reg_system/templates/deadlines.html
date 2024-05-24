@@ -1,0 +1,51 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Deadlines
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static '/CSS/courses.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        <nav class="navbar navbar-light bg-light justify-content-between course-nav">
+            <h2 class="navbar-brand">Deadlines</h2>            
+        </nav>
+        
+        <div id="message-container" class="col-md-4 offset-4"> </div>
+        <div class="col-md-4"></div>
+        {% for deadline in deadlines %}
+            <div class="col-md-3 mb-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ deadline.name }}</h5>
+                        <p class="card-text">{{ deadline.due_date }}</p>
+                        <p class="card-text">{{ deadline.description }}</p>
+                    </div>
+
+                    <div class="buttons">
+                        <button class="btn btn-primary m-2 add-deadline-button" deadline_id="{{ deadline.id }}">Add deadline</button>
+                        {% if user.is_authenticated and user.is_staff %}
+                            <button class="btn btn-primary m-2 edit-deadline" deadline_id="{{ deadline.id }}">Edit deadline</button>
+                            <button class="btn btn-primary m-2 delete-deadline" deadline_id="{{ deadline.student_student_id }}">Delete deadline</button>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            </div>
+        {% endfor %}
+        {% if user.is_authenticated and user.is_staff %}
+            <button type="button" class="btn btn-primary create-btn" id="create-btn">Create deadline</button>
+        {% endif %}
+        
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static '/js/deadline.js' %}"></script>
+{% endblock %}
