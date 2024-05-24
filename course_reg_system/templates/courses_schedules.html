@@ -1,10 +1,13 @@
-{% extends "master.html" %} {% load static %} {% block title %} Student Courses
-Schedules {% endblock %} {% block css %}
+{% extends "master.html" %}
+{% load static %}
+{% block title %} Student Courses Schedules {% endblock %}
+{% block css %}
 <!-- Add any custom CSS styles here -->
-{% endblock %} {% block content %}
-<div class="container">
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
   <div class="row">
-    {% if schedules %}
+    {% if schedules%}
     <div class="col-12">
       <table class="table">
         <thead>
@@ -17,14 +20,16 @@ Schedules {% endblock %} {% block css %}
           </tr>
         </thead>
         <tbody>
-          {% for schedule in schedules %}
+          {% for course_with_schedule in schedules%}
+          {% for schedule in course_with_schedule.schedules %}
           <tr>
-            <td>{{ schedule.course.course_name }}</td>
-            <td>{{ schedule.course.instructor_name }}</td>
+            <td>{{ course_with_schedule.course.course_name }}</td>
+            <td>{{ course_with_schedule.course.instructor_name }}</td>
             <td>{{ schedule.days }}</td>
             <td>{{ schedule.start_time }} - {{ schedule.end_time }}</td>
             <td>{{ schedule.room_number }}</td>
           </tr>
+          {% endfor %}
           {% endfor %}
         </tbody>
       </table>

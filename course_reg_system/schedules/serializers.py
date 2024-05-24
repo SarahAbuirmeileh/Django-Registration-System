@@ -8,8 +8,8 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ['course_name', 'instructor_name']  
 
 class CourseScheduleSerializer(serializers.ModelSerializer):
-    course = CourseSerializer()  
+    # course = CourseSerializer()  
 
     class Meta:
         model = CourseSchedule
-        fields = ['course', 'days', 'start_time', 'end_time', 'room_number']
+        fields = ['days', 'start_time', 'end_time', 'room_number']

@@ -25,6 +25,7 @@
   justify-content: space-around;
   padding: 20px;
   margin: 0;
+  flex-wrap: wrap;
 }
 
 form {

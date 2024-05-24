@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import CourseSchedule
 from courses.models import Course
-from .serializers import CourseScheduleSerializer
+from .serializers import CourseScheduleSerializer, CourseSerializer
 from students.models import StudentRegistration
 from django.shortcuts import render, redirect
 
@@ -24,16 +24,20 @@ def schedule_creation_retrieval(request):
             try:
                 # Fetch all courses registered by the current student
                 registered_courses = StudentRegistration.objects.filter(student=current_student_id).values_list('course', flat=True)
-
-                # Fetch all schedules associated with the registered courses
+                
                 if registered_courses:
-                    # Retrieve the schedule IDs associated with the registered courses
-                    schedule_ids = Course.objects.filter(pk__in=registered_courses).values_list('schedule_id', flat=True)
+                    # Fetch the schedules associated with the registered courses
+                    registered_courses_with_schedules = []
 
-                    # Fetch the schedules based on the schedule IDs
-                    schedules = CourseSchedule.objects.filter(pk__in=schedule_ids)
-                    serializer = CourseScheduleSerializer(schedules, many=True)
-                    return render(request, 'courses_schedules.html', {'schedules': serializer.data})
+                    for course_id in registered_courses:
+                        course = Course.objects.get(pk=course_id)
+                        schedules = CourseSchedule.objects.filter(pk=course.schedule_id)
+                        serializer = CourseScheduleSerializer(schedules, many=True)
+                        registered_courses_with_schedules.append({
+                            'course': CourseSerializer(course).data,
+                            'schedules': serializer.data
+                        })
+                    return render(request, 'courses_schedules.html', {'schedules': registered_courses_with_schedules})
                 else:
                     # Handle the case where the student has not registered for any courses yet
                     return render(request, 'courses_schedules.html', {'schedules': []})

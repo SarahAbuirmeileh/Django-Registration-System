@@ -6,56 +6,87 @@
 {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static '/CSS/courses.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/CSS/courses.css' %}"> 
 {% endblock %}
+
 
 {% block content %}
-    <div class="row">
+<div class="row px-4 mt-5">
 
-        <nav class="navbar navbar-light bg-light justify-content-between course-nav">
-            <h2 class="navbar-brand">Courses</h2>
-            <form class="form-inline nav-form" action="{% url 'search_course' %}" method="GET">
-                <div class="search-container">
-                    <input class="form-control mr-1" type="search" name="course_name" placeholder="Course Name" aria-label="Search">
-                    <button class="btn btn-outline-success search" type="submit">Search</button>
-                </div>
-            </form>            
-        </nav>
-        
-        <div id="message-container" class="col-md-4 offset-4"> </div>
-        <div class="col-md-4"></div>
-        {% for course in courses %}
-            <div class="col-md-3 mb-4">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ course.course_name }}</h5>
-                        <p class="card-text">{{ course.course_code }}</p>
-                        <p class="card-text">{{ course.instructor_name }}</p>
-                        <p class="card-text">{{ course.description }}</p>
-                        <p class="card-text"><strong>Prerequisites:</strong> {{ course.prerequisites }}</p>
-                        <p class="card-text"><strong>Schedule:</strong> {{ course.schedule }}</p>
-                        <p class="card-text"><strong>Available Spots:</strong> {{ course.available_spots }}</p>
-                    </div>
+    <nav>
+    <form class="form-inline nav-form" action="{% url 'search_course' %}" method="GET">
+        <div class="search-container course-nav d-flex justify-content-between">
+            <input class="form-control mr-1" type="search" name="course_name" placeholder="Course Name" aria-label="Search by Course Name">
+            <input class="form-control mr-1" type="search" name="instructor_name" placeholder="Instructor Name" aria-label="Search by Instructor Name">
+            <input class="form-control mr-1" type="search" name="course_code" placeholder="Course Code" aria-label="Search by Course Code">
+            <button class="btn btn-outline-success search" type="submit">Search</button>
+        </div>        
+    </form>            
+</nav>
+    
+    <div id="message-container" class="col-md-4 offset-4 mt-4"> </div>
+    <div class="col-md-4"></div>
 
-                    <div class="buttons">
-                        <button class="btn btn-primary m-2 add-course-button" course_code="{{ course.course_code }}">Add course</button>
-                        {% if user.is_authenticated and user.is_staff %}
-                            <button class="btn btn-primary m-2 edit-course" course_code="{{ course.course_code }}">Edit course</button>
-                            <button class="btn btn-primary m-2 delete-course" course_code="{{ course.course_code }}">Delete course</button>
+    {% for course in courses %}
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 shadow">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ course.course_name }}</h5>
+                <p class="card-text"><i class="fas fa-file-code"></i> {{ course.course_code }}</p>
+                <p class="card-text"><i class="fas fa-user"></i> {{ course.instructor_name }}</p>
+                <p class="card-text"><i class="fas fa-file-alt"></i> {{ course.description }}</p>
+                <div class="mt-auto">
+                    <ul class="list-unstyled">
+                        {% if course.schedule %}
+                            {% if course.schedule and length > 1 %}
+                                {% for schedule in course.schedule %}
+                                    <li><i class="far fa-calendar-alt"></i> {{ schedule.days }} {{ schedule.start_time }} - {{ schedule.end_time }} (Room: {{ schedule.room_number }})</li>
+                                {% endfor %}
+                            {% else %}
+                                <li><i class="far fa-calendar-alt"></i> {{ course.schedule.days }} {{ course.schedule.start_time }} - {{ course.schedule.end_time }} (Room: {{ course.schedule.room_number }})</li>
+                            {% endif %}
+                        {% else %}
+                            <li><i class="far fa-calendar-alt"></i> No schedules found</li>
                         {% endif %}
-                    </div>
-                    
+                    </ul>
+                    <p class="card-text"><i class="fas fa-list"></i> <strong>Prerequisites:</strong></p>
+                    <ul class="list-unstyled">
+                        {% if course.prerequisites %}
+                            {% if course.prerequisites and length > 1 %}
+                                {% for prerequisite in course.prerequisites %}
+                                    <li><i class="fas fa-graduation-cap"> </i>{{ prerequisite }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <p><i class="fas fa-graduation-cap"></i> {{ course.prerequisites }}</p>
+                            {% endif %}
+                        {% else %}
+                            <li> No Prerequisites found</li>
+                        {% endif %}
+                    </ul>
+                    <p class="card-text"><i class="fas fa-users"></i> <strong>Available Spots:</strong> {{ course.available_spots }}</p>
+                </div>
+                <div class="mt-3 ml-0">
+                    <button class="btn btn-primary m-2 add-course-button" course_code="{{ course.course_code }}">Add course</button>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <button class="btn btn-primary m-2 edit-course" course_code="{{ course.course_code }}">Edit course</button>
+                        <button class="btn btn-primary m-2 delete-course" course_code="{{ course.course_code }}">Delete course</button>
+                    {% endif %}
                 </div>
             </div>
-        {% endfor %}
-        {% if user.is_authenticated and user.is_staff %}
-            <button type="button" class="btn btn-primary create-btn" id="create-btn">Create Course</button>
-        {% endif %}
-        
+        </div>
     </div>
+    {% endfor %}
+    
+    {% if user.is_authenticated and user.is_staff %}
+        <div class="col-md-3 mb-4">
+            <button type="button" class="btn btn-primary create-btn" id="create-btn">Create Course</button>
+        </div>
+    {% endif %}
 
-
+</div>
 {% endblock %}
+
+
 
 {% block scripts %}
     <script src="{% static '/js/course.js' %}"></script>

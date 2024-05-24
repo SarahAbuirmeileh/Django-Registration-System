@@ -8,7 +8,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from accounts.models import UserImage
 
-
+    
 
 def login(request):
     if request.method == 'POST':

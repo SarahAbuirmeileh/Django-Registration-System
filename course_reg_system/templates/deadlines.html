@@ -10,11 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        
-        <nav class="navbar navbar-light bg-light justify-content-between course-nav">
-            <h2 class="navbar-brand">Deadlines</h2>            
-        </nav>
+    <div class="row mt-5 px-5">
         
         <div id="message-container" class="col-md-4 offset-4"> </div>
         <div class="col-md-4"></div>
@@ -23,10 +19,10 @@
             <div class="col-md-3 mb-4">
                 <div class="card shadow">
                     <div class="card-body">
-                        <h5 class="card-title">{{ deadline.name }}</h5>
-                        <p class="card-text">{{ deadline.due_date }}</p>
-                        <p class="card-text">{{ deadline.description }}</p>
-                    </div>
+                        <h5 class="card-title"><i class="fas fa-calendar-check"></i> {{ deadline.name }}</h5>
+                        <p class="card-text"><i class="far fa-calendar-alt"></i> {{ deadline.due_date }}</p>
+                        <p class="card-text"><i class="fas fa-file-alt"></i> {{ deadline.description }}</p>
+                    </div>                    
 
                     <div class="buttons">
                         {% if user.is_authenticated and user.is_staff %}

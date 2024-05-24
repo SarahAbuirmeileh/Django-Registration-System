@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
- <div class="container-fluid">
+ <div class="container-fluid mt-5">
 
         <div class="row">
 
@@ -25,7 +25,7 @@
                     {% endfor %}
                 {% endif %}
 
-                <div class="form">
+                <div class="form d-flex flex-wrap" >
                     <form method="POST" enctype="multipart/form-data">
                          {% csrf_token %}
                         <h2 class="text-center mb-5">Register</h2>

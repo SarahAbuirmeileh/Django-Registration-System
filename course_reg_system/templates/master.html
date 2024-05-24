@@ -1,94 +1,147 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    {% load static %}
-    {% block css %}
-    {% endblock %}
-    <link rel="stylesheet" type="text/css" href="{% static '/CSS/nav.css' %}">
-</head>
-<body>
-
-<nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img class="logo img-fluid" src="{% static 'images/logo.png' %}" alt="Logo">
-                <span class="title">Enrollify</span>
-            </a>
-            <div type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                {% comment %} <span class="navbar-toggler-icon"></span> {% endcomment %}
-                {% if request.session.student_id %}
-                <div class="d-block d-lg-none">
-                    {% if request.session.profile_image_url %}
-                        <img src="{{ request.session.profile_image_url }}" alt="Profile Image" width="70" height="70">
-                    {% else %}
-                        <img src="{% static 'images/profile.png' %}" alt="Profile Image" width="70" height="70">
-                    {% endif %}
-                    </div>
-                {% endif %}
-            </div>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/">Admin</a>
-                    </li>                    
-                    <!-- Check if the user is authenticated -->
-                    {% if request.session.student_id or request.user.is_authenticated %}
-                        <li class="nav-item">
-                        <a class="nav-link" href="{% url 'get_all_courses' %}">Courses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'schedule-creation-retrieval' %}">Schedules</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'get_deadlines' %}">Deadlines</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'generate_reports' %}">Reports</a>
-                        </li>
-                        <!-- User is authenticated, show logout button -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                        </li>
-                    {% else %}
-                        <!-- User is not authenticated, show login and register buttons -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register' %}">Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
-                {% if request.session.student_id %}
-                 <div class="d-none d-lg-block">
-                    {% if request.session.profile_image_url %}
-                        <img src="{{ request.session.profile_image_url }}" alt="Profile Image" width="70" height="70">
-                    {% else %}
-                        <img src="{% static 'images/profile.png' %}" alt="Profile Image" width="70" height="70">
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    {% load static %} {% block css %} {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static '/CSS/nav.css' %}" />
+    <style>
+      @media (max-width: 992px) { 
+            .profile-links {
+                position: absolute;
+                top: 80px; 
+                right: 0;
+                z-index: 1000;
+                background-color: white;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                padding: 10px;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img
+            class="logo img-fluid"
+            src="{% static 'images/logo.png' %}"
+            alt="Logo"
+          />
+          <span class="title">Enrollify</span>
+        </a>
+        <div
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <div class="d-block d-lg-none">
+            {% if request.session.profile_image_url %}
+            <img
+              src="{{ request.session.profile_image_url }}"
+              alt="Profile Image"
+              width="60"
+              height="60"
+              class="rounded-circle"
+            />
+            {% else %}
+            <img
+              src="{% static 'images/profile.png' %}"
+              alt="Profile Image"
+              width="70"
+              height="70"
+            />
+            {% endif %}
+          </div>
         </div>
+        <div class="collapse navbar-collapse profile-links" id="navbarNav">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/">Admin</a>
+            </li>
+            <!-- Check if the user is authenticated -->
+            {% if request.session.student_id or request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'get_all_courses' %}">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'schedule-creation-retrieval' %}"
+                >Schedules</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'get_deadlines' %}"
+                >Notifications</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'generate_reports' %}"
+                >Reports</a
+              >
+            </li>
+            <!-- User is authenticated, show logout button -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <!-- User is not authenticated, show login and register buttons -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+            {% endif %}
+          </ul>
+          {% if request.session.student_id %}
+          <div class="d-none d-lg-block">
+            {% if request.session.profile_image_url %}
+            <div>
+              <img
+                src="{{ request.session.profile_image_url }}"
+                alt="Profile Image"
+                width="60"
+                height="60"
+                class="rounded-circle"
+              />
+            </div>
+            {% else %}
+            <img
+              src="{% static 'images/profile.png' %}"
+              alt="Profile Image"
+              width="70"
+              height="70"
+            />
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </nav>
 
-{% block content %}
-
-{% endblock %}
-
-{% block scripts %}
-{% endblock %}
-
-</body>
+    {% block content %} {% endblock %} {% block scripts %} {% endblock %}
+  </body>
 </html>

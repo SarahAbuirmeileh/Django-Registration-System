@@ -23,7 +23,9 @@ def delete_edit_course(request, course_id):
 
     if request.user.is_staff:  
     
+        # ToDo: course_id or course_code
         course = get_object_or_404(Course, pk=course_id)
+        # course = Course.objects.get(course_code = course_id)
 
         if request.method == 'DELETE':
             if course.delete():
