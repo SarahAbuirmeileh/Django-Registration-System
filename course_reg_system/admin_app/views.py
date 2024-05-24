@@ -14,6 +14,8 @@ from students.serializers import DeadlineSerializer
 from students.models import Student, Deadline
 from schedules.models import CourseSchedule
 from rest_framework.response import Response
+from django.http import HttpResponse
+
 
 
 @api_view(['DELETE', 'POST', 'GET'])
@@ -131,7 +133,7 @@ def create_course(request):
         return redirect('home') 
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def create_deadline(request):
     if request.user.is_staff:
         if request.method == 'POST':
@@ -148,8 +150,10 @@ def create_deadline(request):
                             'sarahabuirmeileh@gmail.com',
                             [student.email],
                         )
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    return redirect('get_deadlines')
+                
+        elif request.method == 'GET':
+            return render(request, 'deadline_create.html')
     else:
         return redirect('home')
 

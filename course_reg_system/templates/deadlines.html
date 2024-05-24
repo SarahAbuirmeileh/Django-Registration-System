@@ -28,7 +28,6 @@
                     </div>
 
                     <div class="buttons">
-                        <button class="btn btn-primary m-2 add-deadline-button" deadline_id="{{ deadline.id }}">Add deadline</button>
                         {% if user.is_authenticated and user.is_staff %}
                             <button class="btn btn-primary m-2 edit-deadline" deadline_id="{{ deadline.id }}">Edit deadline</button>
                             <button class="btn btn-primary m-2 delete-deadline" deadline_id="{{ deadline.student_student_id }}">Delete deadline</button>
