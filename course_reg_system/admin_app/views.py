@@ -161,12 +161,14 @@ def create_deadline(request):
 @api_view(['DELETE', 'PATCH'])
 def delete_edit_deadline(request, deadline_id):
     
-    if request.user.is_staff:
+    # if request.user.is_staff:
         deadline = get_object_or_404(Deadline, pk=deadline_id)
 
         if request.method == 'DELETE':
-            deadline.delete()
-            return JsonResponse({"message": "Deadline deleted successfully"}, status=status.HTTP_200_OK)
+            if deadline.delete():
+                return Response({"message": "Deadline deleted successfully"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "Failed to delete deadline"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         elif request.method == 'PATCH':
             serializer = DeadlineSerializer(deadline, data=request.data, partial=True)
@@ -174,5 +176,5 @@ def delete_edit_deadline(request, deadline_id):
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return redirect('home')
+    # else:
+    #     return redirect('home')
