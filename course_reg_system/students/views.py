@@ -98,8 +98,9 @@ def get_student_schedule(request):
     return Response(serializer.data)
 
 
+
 @api_view(['GET'])
-def student_deadlines(request):
+def get_deadlines(request):
     deadlines = Deadline.objects.all()  # Retrieve all deadlines
     serializer = DeadlineSerializer(deadlines, many=True)
-    return Response(serializer.data)
+    return render(request, 'deadlines.html', {'deadlines': serializer.data})

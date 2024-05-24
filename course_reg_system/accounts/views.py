@@ -1,16 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password, check_password
 from students.models import Student
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import make_password
+from django.contrib import auth
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from accounts.models import UserImage
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.decorators import api_view
+
 
 
 def login(request):
@@ -43,6 +40,7 @@ def logout(request):
     if 'student_id' in request.session:
         del request.session['student_id']
         del request.session['profile_image_url']
+    auth.logout(request)
     return redirect('login') 
 
 

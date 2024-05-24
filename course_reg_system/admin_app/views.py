@@ -14,6 +14,8 @@ from students.serializers import DeadlineSerializer
 from students.models import Student, Deadline
 from schedules.models import CourseSchedule
 from rest_framework.response import Response
+from django.http import HttpResponse
+
 
 
 @api_view(['DELETE', 'POST', 'GET'])
@@ -131,7 +133,7 @@ def create_course(request):
         return redirect('home') 
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def create_deadline(request):
     if request.user.is_staff:
         if request.method == 'POST':
@@ -148,27 +150,38 @@ def create_deadline(request):
                             'sarahabuirmeileh@gmail.com',
                             [student.email],
                         )
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    return redirect('get_deadlines')
+                
+        elif request.method == 'GET':
+            return render(request, 'deadline_create.html')
     else:
         return redirect('home')
 
 
-@api_view(['DELETE', 'PATCH'])
+@api_view(['DELETE', 'POST', 'GET'])
 def delete_edit_deadline(request, deadline_id):
     
     if request.user.is_staff:
         deadline = get_object_or_404(Deadline, pk=deadline_id)
 
         if request.method == 'DELETE':
-            deadline.delete()
-            return JsonResponse({"message": "Deadline deleted successfully"}, status=status.HTTP_200_OK)
+            if deadline.delete():
+                return Response({"message": "Deadline deleted successfully"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "Failed to delete deadline"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        elif request.method == 'PATCH':
-            serializer = DeadlineSerializer(deadline, data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        elif request.method == 'POST':
+            deadline_fields = ['name', 'description', 'due_date']
+            for field in deadline_fields:
+                if field in request.POST and request.POST[field] != '':
+                    setattr(deadline, field, request.POST[field])
+            deadline.save() 
+            
+            return redirect('get_deadlines')
+        
+        elif request.method == 'GET':
+            return render(request, 'deadline_edit.html')
+
     else:
         return redirect('home')
+
