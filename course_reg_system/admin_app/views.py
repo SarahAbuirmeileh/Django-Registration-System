@@ -86,8 +86,8 @@ def generate_reports(request):
             # Calculate course popularity
             courses_data = []
             for course in courses:
-                if course.id in courses_enrollments:
-                    popularity_score = courses_enrollments.get(course.id, 0)
+                if course.course_code in courses_enrollments:
+                    popularity_score = courses_enrollments.get(course.course_code, 0)
                     instructor_name = course.instructor_name  
                     courses_data.append({'course_code': course.course_code, 'popularity_score': popularity_score, 'instructor_name': instructor_name})
 
