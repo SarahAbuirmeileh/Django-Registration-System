@@ -88,7 +88,7 @@ def add_course_to_schedule(request, course_code):
 @api_view(['GET'])
 def get_student_schedule(request):
     try:
-        student_id=request.session['student_id']
+        student_id=request.session['student_idAdminstration']
         student = Student.objects.get(student_id=student_id)
     except Student.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
