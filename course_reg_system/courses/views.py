@@ -19,6 +19,7 @@ def course_details(request, course_id):
     serializer = CourseDetailSerializer(course)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def get_all_courses(request):
     if request.user.is_staff:

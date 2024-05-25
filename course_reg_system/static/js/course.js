@@ -10,7 +10,7 @@ const displayMessage = (message, isError = false) => {
     
     const alertElement = document.createElement('div');
     alertElement.classList.add('alert', alertClass, 'messages', 'mb-4');
-    alertElement.setAttribute('role', 'alert');Adminstration
+    alertElement.setAttribute('role', 'alert');
     alertElement.innerText = message;
     
     const messageContainer = document.getElementById('message-container');

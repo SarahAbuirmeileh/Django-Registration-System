@@ -47,48 +47,36 @@ def add_course_to_schedule(request, course_code):
     try:
         student_id = request.session.get('student_id')
         if not student_id:
-            return Response({"message": "Student not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response( "Student not authenticated", status=status.HTTP_401_UNAUTHORIZED)
 
         student = Student.objects.get(student_id=student_id)
         course = Course.objects.get(course_code=course_code)
     except (Student.DoesNotExist, Course.DoesNotExist):
-        return Response({"message": "Student or course not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response("Student or course not found", status=status.HTTP_404_NOT_FOUND)
 
     # Check if the student is already registered for the course
     if student.courses.filter(course_code=course_code).exists():
-        return Response({"message": "Student is already registered for this course"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response("Student is already registered for this course", status=status.HTTP_400_BAD_REQUEST)
 
     # Check if the student has completed all prerequisites for the course
     if course.prerequisites:
         if not StudentRegistration.objects.filter(student=student, course=course.prerequisites).exists():
-            return Response({"message": "Student has not completed prerequisites for this course"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response("Student has not completed prerequisites for this course", status=status.HTTP_400_BAD_REQUEST)
 
     # Check if there is available capacity for the course
     if StudentRegistration.objects.filter(course=course).count() >= course.capacity:
-        return Response({"message": "Course capacity is full"}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Check for schedule conflicts
-    student_courses = student.courses.all()
-    student_schedule_conflicts = Q()
-    for student_course in student_courses:
-        if student_course.schedule:
-            student_schedule_conflicts |= Q(schedule__days=student_course.schedule.days) & \
-                                         (Q(schedule__start_time__lt=student_course.schedule.end_time) &
-                                          Q(schedule__end_time__gt=student_course.schedule.start_time))
-
-    if course.schedule and StudentRegistration.objects.filter(student=student).filter(student_schedule_conflicts).exists():
-        return Response({"message": "Schedule conflicts with another registered course"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response("Course capacity is full", status=status.HTTP_400_BAD_REQUEST)
 
     registration = StudentRegistration.objects.create(student=student, course=course)
     registration.save()
 
-    return Response({"message": "Course added to schedule successfully"}, status=status.HTTP_200_OK)
+    return Response("Course added to schedule successfully", status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def get_student_schedule(request):
     try:
-        student_id=request.session['student_idAdminstration']
+        student_id=request.session['student_id']
         student = Student.objects.get(student_id=student_id)
     except Student.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)

@@ -85,7 +85,7 @@ def register(request):
                 # user_image = UserImage.objects.create(user=user, image=profile_image, caption="User Profile")
                 user_image = UserImage(image=profile_image, user=user, caption="Profile Image")
                 user_image.save()
-            messages.success(request, 'Registration successful. Please log in.')
+            # messages.success(request, 'Registration successful. Please log in.')
             return redirect('login')
         except Exception as e:
             messages.error(request, 'An error occurred during registration.')
