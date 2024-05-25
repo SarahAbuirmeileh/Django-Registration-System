@@ -78,14 +78,11 @@
     {% endfor %}
     
     {% if user.is_authenticated and user.is_staff %}
-        <div class="col-md-3 mb-4">
-            <button type="button" class="btn btn-primary create-btn" id="create-btn">Create Course</button>
-        </div>
+            <button type="button" class="btn btn-primary create-btn col-md-1" id="create-btn">Create Course</button>
     {% endif %}
 
 </div>
 {% endblock %}
-
 
 
 {% block scripts %}

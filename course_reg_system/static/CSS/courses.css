@@ -1,6 +1,7 @@
 .row {
   margin: 25px;
 }
+
 .card {
   height: 100%;
   /*background-color:#53A7D8;*/
@@ -37,6 +38,7 @@ button {
   flex-wrap: wrap;
   gap: 10px;
 }
+
 @media (min-width: 768px) {
   .search-container {
     flex-wrap: nowrap;
@@ -51,7 +53,8 @@ button {
   padding-right: 25px !important;
   margin-left: 10px;
 }
-*/ .create-btn {
+
+.create-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -65,9 +68,11 @@ button {
   cursor: pointer;
   z-index: 9999;
 }
+
 .search {
   color: white;
 }
+
 .bg-light {
   background-color: transparent !important;
 }
