@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block css %}
-    {% comment %} <link rel="stylesheet" type="text/css" href="{% static '/CSS/login.css' %}"> {% endcomment %}
+    <link rel="stylesheet" type="text/css" href="{% static '/CSS/login.css' %}">
 {% endblock %}
 
 {% block nav %}{% endblock %}
@@ -45,7 +45,7 @@
               {{ message }}
             </div>
             {% endfor %} {% endif %}
-            <button type="submit" class="btn btn-primary btn-block">
+            <button type="submit" class="btn btn-primary btn-block login-btn">
               Login
             </button>
           </form>

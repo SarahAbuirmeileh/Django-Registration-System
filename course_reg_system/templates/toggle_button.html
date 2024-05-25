@@ -1,0 +1,147 @@
+<style>
+  body.dark-mode {
+    background-color: #121212;
+    /* color: #ffffff; */
+  }
+
+  body.dark-mode > nav {
+    background-color: #121212 !important;
+  }
+  body.dark-mode .logo-title {
+    color: white;
+  }
+  body.dark-mode .entry-title {
+    color: white;
+  }
+  body.dark-mode .content {
+    background-color: #121212;
+    color: white;
+  }
+  body.dark-mode .card-body {
+    background-color: #121212;
+    color: white;
+  }
+  body.dark-mode .card-body > p,
+  body.dark-mode .card-body > h5,
+  body.dark-mode .card-body > div > p,
+  body.dark-mode .card-body > span,
+  body.dark-mode .card-body > div > ul,
+  body.dark-mode .card-body > div > ul > li,
+  body.dark-mode .card-body > i {
+    color: white !important;
+  }
+
+  .toggle-switch {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
+
+  .toggle-switch input {
+    display: none;
+  }
+  .dark-mode input[type="text"],
+  .dark-mode input[type="email"],
+  .dark-mode input[type="password"],
+  .dark-mode input[type="search"] {
+    background-color: transparent;
+    color: white;
+  }
+
+  .dark-mode input[type="text"]::placeholder,
+  .dark-mode input[type="email"]::placeholder,
+  .dark-mode input[type="password"]::placeholder,
+  .dark-mode input[type="search"]::placeholder {
+    color: white;
+  }
+
+  .toggle-switch label {
+    background: #ddd;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+    width: 60px;
+    padding: 5px;
+    position: relative;
+    transition: background 0.3s ease;
+  }
+
+  .toggle-switch label:before {
+    content: "";
+    background: #fff;
+    border-radius: 50%;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    left: 3px;
+    transition: left 0.3s ease;
+  }
+
+  .toggle-switch input:checked + label {
+    background: #4cd137;
+  }
+
+  .toggle-switch input:checked + label:before {
+    left: 33px;
+  }
+
+  .toggle-switch i {
+    font-size: 16px;
+    color: #fff;
+    width: 16px;
+    height: 16px;
+  }
+
+  .toggle-switch input:checked + label .bi-sun-fill {
+    color: #fff;
+  }
+
+  .toggle-switch input:checked + label .bi-moon-fill {
+    color: #4cd137;
+  }
+  @media (max-width: 991px) {
+    .toggle-switch {
+      top: 35px;
+      left: 60%;
+      transform: translate(-50%, 0);
+      width: 60px;
+    }
+  }
+</style>
+
+<div class="toggle-switch">
+  <input type="checkbox" id="darkModeToggle" />
+  <label for="darkModeToggle" class="d-flex align-items-center">
+    <i class="bi bi-sun-fill"></i>
+    <i class="bi bi-moon-fill"></i>
+  </label>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    const toggleSwitch = document.getElementById("darkModeToggle");
+    const currentTheme = localStorage.getItem("theme");
+
+    if (currentTheme) {
+      document.body.classList.add(currentTheme);
+
+      if (currentTheme === "dark-mode") {
+        toggleSwitch.checked = true;
+      }
+    }
+
+    toggleSwitch.addEventListener("change", function () {
+      if (this.checked) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("theme", "dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("theme", "light-mode");
+      }
+    });
+  });
+</script>

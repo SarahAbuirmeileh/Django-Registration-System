@@ -32,7 +32,15 @@ button {
 
 .search-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+@media (min-width: 768px) {
+  .search-container {
+    flex-wrap: nowrap;
+  }
 }
 
 .search-container input[type="search"] {
@@ -42,9 +50,8 @@ button {
 .course-nav {
   padding-right: 25px !important;
   margin-left: 10px;
-} */
-
-.create-btn {
+}
+*/ .create-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
